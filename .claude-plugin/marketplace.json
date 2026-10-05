@@ -1,0 +1,12 @@
+{
+  "name": "barra-usage-model",
+  "description": "Barras de uso do Claude Code: janelas de 5h, semanal e de contexto",
+  "owner": { "name": "Sidney François", "url": "https://github.com/sidneyfrancois" },
+  "plugins": [
+    {
+      "name": "barra-usage-model",
+      "source": "./",
+      "description": "Usage bars for the 5-hour, weekly and context windows above the prompt, with a compact summary, model and effort below it"
+    }
+  ]
+}

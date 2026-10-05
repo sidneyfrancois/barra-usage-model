@@ -11,7 +11,21 @@ Clique em um item do resumo para abrir ou fechar a barra dele. Com todas as barr
 
 ## Instalação
 
-Clone o repositório e aponte o Claude Code para ele como plugin:
+Dentro de uma sessão do Claude Code:
+
+```
+/plugin marketplace add sidneyfrancois/barra-usage-model
+/plugin install barra-usage-model@barra-usage-model
+```
+
+Ou pelo terminal:
+
+```sh
+claude plugin marketplace add sidneyfrancois/barra-usage-model
+claude plugin install barra-usage-model@barra-usage-model
+```
+
+Para desenvolver, clone o repositório e carregue o plugin direto da pasta:
 
 ```sh
 git clone https://github.com/sidneyfrancois/barra-usage-model.git
@@ -23,6 +37,7 @@ claude --plugin-dir ./barra-usage-model
 | Caminho | Conteúdo |
 | --- | --- |
 | `.claude-plugin/plugin.json` | Manifesto do plugin |
+| `.claude-plugin/marketplace.json` | Marketplace com este plugin, para instalar via `/plugin` |
 | `hooks/register.tsx` | O mod: os medidores, a faixa de barras e o resumo |
 | `types/index.d.ts` | Os tipos do estado do plugin |
 | `tests/` | Testes unitários de formatação e layout |
