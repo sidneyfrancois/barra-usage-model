@@ -13,11 +13,11 @@ import type { Effort, View } from '../types'
 const tick = atom({ plugin: 'barra-usage-model', key: 'tick' } as const, 0)
 // The one-line summary at the right of the prompt footer is always there, each
 // item opening or closing its own meter in the band. Full: every meter open.
-// Compact: only the ones in `expanded`; opening the last one returns to full. Kept in the store too, so the
-// next session starts the way this one left it.
+// Compact: only the ones in `expanded`; opening the last one returns to full.
+// Every session starts compact, every meter closed.
 const FULL: View = { isCompact: false, expanded: [] }
-const view = atom({ plugin: 'barra-usage-model', key: 'view' } as const, FULL)
-const VIEW_KEY = 'view'
+const COMPACT: View = { isCompact: true, expanded: [] }
+const view = atom({ plugin: 'barra-usage-model', key: 'view' } as const, COMPACT)
 // The effort the main loop's last model request asked for; null before one.
 const effort = atom({ plugin: 'barra-usage-model', key: 'effort' } as const, null)
 
@@ -230,7 +230,6 @@ function compactLabel(meter: Meter): string {
 
 async function setView($: EngineInterface, next: View): Promise<void> {
   await update($, view, () => next)
-  await $.store.set(VIEW_KEY, next)
 }
 
 export function isOpen(current: View, key: string): boolean {
@@ -244,15 +243,6 @@ export function toggle(current: View, key: string, keys: string[]): View {
   return keys.every(k => expanded.includes(k)) ? FULL : { isCompact: true, expanded }
 }
 
-function isView(value: unknown): value is View {
-  const v = value as View | null
-  return (
-    typeof v?.isCompact === 'boolean' &&
-    Array.isArray(v.expanded) &&
-    v.expanded.every(k => typeof k === 'string')
-  )
-}
-
 async function load($: EngineInterface): Promise<Meter[]> {
   const { rateLimits, context } = await $.session.usage({ breakdown: 'summary' })
   return meters(rateLimits, context, await $.clock.now())
@@ -260,8 +250,6 @@ async function load($: EngineInterface): Promise<Meter[]> {
 
 export const register: Register = on => {
   on('session.start', async ($, e, next) => {
-    const stored = await $.store.get(VIEW_KEY)
-    if (isView(stored)) await update($, view, () => stored)
     $.clock.every(60_000, () => {
       void update($, tick, n => n + 1)
     })
@@ -369,7 +357,7 @@ export const register: Register = on => {
             key="compact"
             label="[compactar]"
             plain
-            onPress={() => setView($, { isCompact: true, expanded: [] })}
+            onPress={() => setView($, COMPACT)}
           />
         </Box>
         {rows.map((row, r) => {

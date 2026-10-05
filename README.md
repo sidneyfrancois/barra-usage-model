@@ -7,7 +7,7 @@ Um mod para o Claude Code que mostra o seu uso de relance:
 - **Acima do prompt:** barras de uso para a janela de 5 horas, a janela semanal e a janela de contexto. Cada barra mostra a porcentagem usada e quando ela reinicia. A barra de contexto é dividida por categoria, do mesmo jeito que o `/context` divide.
 - **Abaixo do prompt:** um resumo compacto dos mesmos medidores, com o modelo atual e o nível de esforço.
 
-Clique em um item do resumo para abrir ou fechar a barra dele. Com todas as barras fechadas, você fica na visão compacta. Abrir todas de novo volta para a visão completa. O mod lembra a sua escolha entre sessões.
+Toda sessão começa na visão compacta, com todas as barras fechadas. Clique em um item do resumo para abrir ou fechar a barra dele. Abrir todas volta para a visão completa, e o botão `[compactar]` fecha todas de novo.
 
 ## Instalação
 

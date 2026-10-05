@@ -167,11 +167,6 @@ test('a compact item opens its meter, the rest stay folded until opened', async 
     ],
   } }))
   on('session.model', () => ({ value: 'Opus 5.5' }))
-  const saved = new Map<string, unknown>()
-  on('store.set', ($, e) => {
-    saved.set(e.key, e.value)
-    return { value: undefined }
-  })
   const band = () =>
     $.ui.mount({
       plugin: 'barra-usage-model',
@@ -203,17 +198,8 @@ test('a compact item opens its meter, the rest stay folded until opened', async 
     await ui.unmount()
   }
 
-  // Full to start, the summary already under the prompt.
-  let ui = await footer()
-  expect(await ui.find({ type: 'Button', label: '5h 42%' })).toBeDefined()
-  await ui.unmount()
-
-  ui = await band()
-  expect(await ui.find({ type: 'Button', label: '[compactar]' })).toBeDefined()
-  await ui.press({ key: 'compact' })
-  await ui.unmount()
-  expect(saved.get('view')).toEqual({ isCompact: true, expanded: [] })
-  ui = await band()
+  // Compact to start: the band is the engine's own, the summary under the prompt.
+  let ui = await band()
   expect(await ui.find({ type: 'Text', text: 'engine' })).toBeDefined()
   await ui.unmount()
 
@@ -239,13 +225,11 @@ test('a compact item opens its meter, the rest stay folded until opened', async 
   // Pressed again, an open one closes.
   await pressInFooter('compact-five_hour')
   expect(await shown()).toEqual({ fiveHour: false, sevenDay: true, context: false })
-  expect(saved.get('view')).toEqual({ isCompact: true, expanded: ['seven_day'] })
 
   // The last two open make the full view; the summary stays.
   await pressInFooter('compact-five_hour')
   await pressInFooter('compact-context')
   expect(await shown()).toEqual({ fiveHour: true, sevenDay: true, context: true })
-  expect(saved.get('view')).toEqual({ isCompact: false, expanded: [] })
   ui = await footer()
   expect(await ui.find({ type: 'Button', label: '5h 42%' })).toBeDefined()
   await ui.unmount()
@@ -253,4 +237,12 @@ test('a compact item opens its meter, the rest stay folded until opened', async 
   // From the full view, a press closes that one meter.
   await pressInFooter('compact-context')
   expect(await shown()).toEqual({ fiveHour: true, sevenDay: true, context: false })
+
+  // compactar closes every meter at once.
+  await pressInFooter('compact-context')
+  ui = await band()
+  expect(await ui.find({ type: 'Button', label: '[compactar]' })).toBeDefined()
+  await ui.press({ key: 'compact' })
+  await ui.unmount()
+  expect(await shown()).toEqual({ fiveHour: false, sevenDay: false, context: false })
 })
