@@ -1,34 +1,35 @@
 # barra-usage-model
 
-A Claude Code mod that shows your usage at a glance:
+Um mod para o Claude Code que mostra o seu uso de relance:
 
-- **Above the prompt:** usage bars for the 5-hour window, the weekly window and the context window. Each bar shows its percentage and when it resets. The context bar is split by category, the same way `/context` splits it.
-- **Below the prompt:** a compact summary of the same meters, plus the current model and effort level.
+![Barras de uso acima do prompt e o resumo compacto abaixo dele](docs/screenshot.png)
 
-Click an item in the summary to open or close its bar. When every bar is closed, you get the compact view. Opening them all again returns to the full view. The mod remembers your choice between sessions.
+- **Acima do prompt:** barras de uso para a janela de 5 horas, a janela semanal e a janela de contexto. Cada barra mostra a porcentagem usada e quando ela reinicia. A barra de contexto é dividida por categoria, do mesmo jeito que o `/context` divide.
+- **Abaixo do prompt:** um resumo compacto dos mesmos medidores, com o modelo atual e o nível de esforço.
 
-Labels are in Portuguese (pt-BR).
+Clique em um item do resumo para abrir ou fechar a barra dele. Com todas as barras fechadas, você fica na visão compacta. Abrir todas de novo volta para a visão completa. O mod lembra a sua escolha entre sessões.
 
-## Install
+## Instalação
 
-Clone the repo, then point Claude Code at it as a plugin:
+Clone o repositório e aponte o Claude Code para ele como plugin:
 
 ```sh
 git clone https://github.com/sidneyfrancois/barra-usage-model.git
 claude --plugin-dir ./barra-usage-model
 ```
 
-## Layout
+## Estrutura
 
-| Path | Contents |
+| Caminho | Conteúdo |
 | --- | --- |
-| `.claude-plugin/plugin.json` | Plugin manifest |
-| `hooks/register.tsx` | The mod: the meters, the band and the summary |
-| `types/index.d.ts` | The plugin's state types |
-| `tests/` | Unit tests for formatting and layout |
+| `.claude-plugin/plugin.json` | Manifesto do plugin |
+| `hooks/register.tsx` | O mod: os medidores, a faixa de barras e o resumo |
+| `types/index.d.ts` | Os tipos do estado do plugin |
+| `tests/` | Testes unitários de formatação e layout |
+| `docs/` | Imagens do README |
 
-`.claude-plugin/types/` holds the type definitions that Claude Code generates. It is not committed.
+A pasta `.claude-plugin/types/` guarda as definições de tipos que o Claude Code gera. Ela não é versionada.
 
-## License
+## Licença
 
 [MIT](LICENSE)
