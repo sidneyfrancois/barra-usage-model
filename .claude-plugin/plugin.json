@@ -1,6 +1,6 @@
 {
   "name": "barra-usage-model",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Usage bars for the 5-hour, weekly and context windows above the prompt, with a compact summary, model and effort below it",
   "author": { "name": "Sidney François", "url": "https://github.com/sidneyfrancois" },
   "repository": "https://github.com/sidneyfrancois/barra-usage-model",
